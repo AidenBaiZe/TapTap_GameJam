@@ -16,7 +16,7 @@ public class Spike : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // ¼ì²é½øÈëµÄ¶ÔÏóÊÇ·ñÊÇÍæ¼Ò
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (other.CompareTag("Player"))
         {
             playerStatus = other.GetComponent<PlayerStatus>();
@@ -32,11 +32,11 @@ public class Spike : MonoBehaviour
    
     //private void OnTriggerExit2D(Collider2D other)
     //{
-    //    // ¼ì²éÀë¿ªµÄ¶ÔÏóÊÇ·ñÊÇÍæ¼Ò
+    //    // ï¿½ï¿½ï¿½ï¿½ë¿ªï¿½Ä¶ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     //    if (other.CompareTag("Player") && playerInArea)
     //    {
 
-    //        // »Ö¸´Ô­Ê¼Á¦
+    //        // ï¿½Ö¸ï¿½Ô­Ê¼ï¿½ï¿½
     //        playerMovement.InverseAD = false;
 
 
