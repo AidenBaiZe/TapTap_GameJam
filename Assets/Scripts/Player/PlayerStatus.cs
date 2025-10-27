@@ -6,6 +6,11 @@ public class PlayerStatus : MonoBehaviour
 {
     public float Health;
     public GameObject NewPlayer;
+    
+    [Header("影子重叠死亡判定")]
+    [Tooltip("与影子距离小于此值时触发死亡（单位：Unity单位）")]
+    public float shadowDeathDistance = 0.3f;
+    
     void Start()
     {
         Health = 100;
@@ -41,12 +46,12 @@ public class PlayerStatus : MonoBehaviour
         
         foreach (var shadow in allShadows)
         {
-            // 检查距离（使用更严格的阈值，只有真正重叠时才触发）
+            // 检查距离
             float distance = Vector2.Distance(transform.position, shadow.transform.position);
             
-            // 如果距离非常近（重叠），触发死亡
+            // 如果距离小于设定值，触发死亡
             // 注意：只在影子真正开始回放后才检测，避免初始瞬移导致的误判
-            if (distance < 0.3f && !isDead)
+            if (distance < shadowDeathDistance && !isDead)
             {
                 Debug.Log("Player与影子重叠，触发死亡！距离: " + distance);
                 Health = 0;
