@@ -8,10 +8,17 @@ public class AirWall : MonoBehaviour
     public float FadeInTime=0.2f;
     public float DisplayTime=2f;
     public float Staytime=-1f;
+    
+    [Header("éŸ³æ•ˆè®¾ç½®")]
+    [SerializeField] private AudioSource audioSource;
     void Start()
     {
         Display = false;
         Staytime = -1f;
+        
+        // è‡ªåŠ¨è·å–AudioSourceç»„ä»¶
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -29,9 +36,15 @@ public class AirWall : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D other)
     {
-        // ¼ì²é½øÈëµÄ¶ÔÏóÊÇ·ñÊÇÍæ¼Ò
+        // æ£€æŸ¥ç¢°æ’çš„å¯¹è±¡æ˜¯å¦æ˜¯ç©å®¶
         if (other.gameObject.CompareTag("Player"))
         {
+            // æ’­æ”¾ç¢°æ’éŸ³æ•ˆ
+            if (audioSource != null && audioSource.clip != null)
+            {
+                audioSource.Play();
+            }
+            
             Staytime = 0;
             if (!Display)
             {
@@ -45,7 +58,7 @@ public class AirWall : MonoBehaviour
     
     //private void OnCollisionExit2D(Collision2D other)
     //{
-    //    // ¼ì²éÀë¿ªµÄ¶ÔÏóÊÇ·ñÊÇÍæ¼Ò
+    //    // ï¿½ï¿½ï¿½ï¿½ë¿ªï¿½Ä¶ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     //    if (other.gameObject.CompareTag("Player"))
     //    {
            

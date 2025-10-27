@@ -11,6 +11,7 @@ TagManager:
   - Start
   - Item
   - Bug
+  - CanvasPlayer
   layers:
   - Default
   - TransparentFX

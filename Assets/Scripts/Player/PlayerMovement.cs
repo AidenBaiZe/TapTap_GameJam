@@ -39,6 +39,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("组件引用")]
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform graphics;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioSource rushAudioSource;
+    [SerializeField] private AudioSource fallGroundAudioSource;
 
     
     [Header("输入设置")]
@@ -52,6 +55,10 @@ public class PlayerMovement : MonoBehaviour
     private float currentSpeed;
     private bool isFacingRight = true;
     [SerializeField] private Quaternion originalPlayerRotation;
+    
+    // 音效相关变量
+    private bool isPlayingFootstepSound = false;
+    private Collider2D lastGroundCollider; // 记录上一帧检测到的地面碰撞体
 
     // 状态变量
     public bool InhibitInput;
@@ -98,6 +105,23 @@ public class PlayerMovement : MonoBehaviour
 
         if (graphics == null)
             graphics = transform.Find("Graphics");
+            
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
+            
+        // 获取冲刺音效组件
+        Transform rushAudioTransform = transform.Find("rushAudio");
+        if (rushAudioTransform != null)
+        {
+            rushAudioSource = rushAudioTransform.GetComponent<AudioSource>();
+        }
+        
+        // 获取落地音效组件
+        Transform fallGroundAudioTransform = transform.Find("FallGroundAudio");
+        if (fallGroundAudioTransform != null)
+        {
+            fallGroundAudioSource = fallGroundAudioTransform.GetComponent<AudioSource>();
+        }
 
         // 设置输入动作
         SetupInputActions();
@@ -110,8 +134,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         CheckRotation();
-        
-        
+        HandleFootstepSound();
         HandleAnimation();
         FlipCharacter();
        
@@ -141,6 +164,11 @@ public class PlayerMovement : MonoBehaviour
         
         if (Rush && RushCD<=0) {
             Debug.Log("Rush"+ moveInput);
+            // 播放冲刺音效
+            if (rushAudioSource != null && rushAudioSource.clip != null)
+            {
+                rushAudioSource.Play();
+            }
             StartCoroutine(RUSH(moveInput));
             Rush = false;
             RushTime = 0;
@@ -273,8 +301,19 @@ public class PlayerMovement : MonoBehaviour
 
                 if (hit.collider.CompareTag("Ground"))
                 {
-
+                    // 检查是否是新接触的地面（落地检测）
+                    if (!isGrounded && hit.collider != lastGroundCollider)
+                    {
+                        // 播放落地音效
+                        if (fallGroundAudioSource != null && fallGroundAudioSource.clip != null)
+                        {
+                            fallGroundAudioSource.Play();
+                        }
+                    }
+                    
                     foundGround = true;
+                    lastGroundCollider = hit.collider; // 记录当前地面碰撞体
+                    
                     if (RushTime == 0) {
                         RushTime = 1;
                     }
@@ -290,6 +329,12 @@ public class PlayerMovement : MonoBehaviour
         }
 
         isGrounded = foundGround;
+        
+        // 如果离开地面，清除地面碰撞体记录
+        if (!isGrounded)
+        {
+            lastGroundCollider = null;
+        }
 
         // 调试可视化
         Debug.DrawRay(rayStart, -transform.up * groundCheckDistance, isGrounded ? Color.green : Color.red, 0.1f);
@@ -528,6 +573,32 @@ public class PlayerMovement : MonoBehaviour
             Vector3 scale = transform.localScale;
             scale.x *= -1;
             transform.localScale = scale;
+        }
+    }
+
+    // 处理脚步声
+    void HandleFootstepSound()
+    {
+        // 检查是否在地面且正在移动
+        bool shouldPlaySound = isGrounded && Mathf.Abs(moveInput.x) > 0.1f && !InhibitInput;
+        
+        if (shouldPlaySound && !isPlayingFootstepSound)
+        {
+            // 开始播放音效
+            if (audioSource != null && !audioSource.isPlaying)
+            {
+                audioSource.Play();
+                isPlayingFootstepSound = true;
+            }
+        }
+        else if (!shouldPlaySound && isPlayingFootstepSound)
+        {
+            // 停止播放音效
+            if (audioSource != null && audioSource.isPlaying)
+            {
+                audioSource.Stop();
+                isPlayingFootstepSound = false;
+            }
         }
     }
 

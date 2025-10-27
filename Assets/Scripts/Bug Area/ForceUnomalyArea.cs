@@ -2,49 +2,49 @@ using UnityEngine;
 
 public class UnomalyForceArea : MonoBehaviour
 {
-    [Header("Á¦³¡ÉèÖÃ")]
-    [SerializeField] private Vector2 force ; // ÒªÊ©¼ÓµÄÁ¦
-    [SerializeField] private bool restoreOnExit = true; // Àë¿ªÊ±ÊÇ·ñ»Ö¸´Ô­Á¦
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
+    [SerializeField] public Vector2 force ; // ÒªÊ©ï¿½Óµï¿½ï¿½ï¿½
+    [SerializeField] private bool restoreOnExit = true; // ï¿½ë¿ªÊ±ï¿½Ç·ï¿½Ö¸ï¿½Ô­ï¿½ï¿½
 
-    private Vector2 originalForce; // ´æ´¢Ô­Ê¼Á¦
-    private PlayerMovement playerMovement; // Íæ¼ÒÒÆ¶¯×é¼þÒýÓÃ
-    private bool playerInArea = false; // Íæ¼ÒÊÇ·ñÔÚÇøÓòÄÚ
+    private Vector2 originalForce; // ï¿½æ´¢Ô­Ê¼ï¿½ï¿½
+    private PlayerMovement playerMovement; // ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    private bool playerInArea = false; // ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-    // µ±ÆäËûÅö×²Ìå½øÈë´¥·¢Æ÷Ê±µ÷ÓÃ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ë´¥ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // ¼ì²é½øÈëµÄ¶ÔÏóÊÇ·ñÊÇÍæ¼Ò
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (other.CompareTag("Player"))
         {
-            // »ñÈ¡PlayerMovement×é¼þ
+            // ï¿½ï¿½È¡PlayerMovementï¿½ï¿½ï¿½
             playerMovement = other.GetComponent<PlayerMovement>();
 
             if (playerMovement != null)
             {
                 playerInArea = true;
 
-                // ±£´æÔ­Ê¼µÄÁ¦Öµ
+                // ï¿½ï¿½ï¿½ï¿½Ô­Ê¼ï¿½ï¿½ï¿½ï¿½Öµ
                 //originalForce = playerMovement.Force;
 
-                // Ó¦ÓÃÐÂµÄÁ¦
+                // Ó¦ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½
                 playerMovement.Force += force;
 
-                Debug.Log($"½øÈëÁ¦³¡ÇøÓò£¬Á¦´Ó {originalForce} ±äÎª {force}");
+                Debug.Log($"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ {originalForce} ï¿½ï¿½Îª {force}");
             }
         }
     }
 
-    // µ±ÆäËûÅö×²ÌåÀë¿ª´¥·¢Æ÷Ê±µ÷ÓÃ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½ë¿ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½
     private void OnTriggerExit2D(Collider2D other)
     {
-        // ¼ì²éÀë¿ªµÄ¶ÔÏóÊÇ·ñÊÇÍæ¼Ò
+        // ï¿½ï¿½ï¿½ï¿½ë¿ªï¿½Ä¶ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (other.CompareTag("Player") && playerInArea)
         {
             if (restoreOnExit && playerMovement != null)
             {
-                // »Ö¸´Ô­Ê¼Á¦
+                // ï¿½Ö¸ï¿½Ô­Ê¼ï¿½ï¿½
                 playerMovement.Force -= force;
-                Debug.Log($"Àë¿ªÁ¦³¡ÇøÓò£¬Á¦»Ö¸´Îª {originalForce}");
+                Debug.Log($"ï¿½ë¿ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½Îª {originalForce}");
             }
 
             playerInArea = false;
@@ -52,23 +52,23 @@ public class UnomalyForceArea : MonoBehaviour
         }
     }
 
-    // ÔÚInspectorÖÐ¿ÉÊÓ»¯´¥·¢Æ÷ÇøÓò
+    // ï¿½ï¿½Inspectorï¿½Ð¿ï¿½ï¿½Ó»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private void OnDrawGizmos()
     {
-        // ÉèÖÃÁ¦³¡ÇøÓòµÄ¿ÉÊÓ»¯ÑÕÉ«
-        Gizmos.color = new Color(0f, 0.8f, 1f, 0.3f); // °ëÍ¸Ã÷À¶É«
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½Ó»ï¿½ï¿½ï¿½É«
+        Gizmos.color = new Color(0f, 0.8f, 1f, 0.3f); // ï¿½ï¿½Í¸ï¿½ï¿½ï¿½ï¿½É«
         Collider2D collider = GetComponent<Collider2D>();
 
         if (collider != null)
         {
-            // ¸ù¾ÝÅö×²ÌåÀàÐÍ»æÖÆ²»Í¬µÄÐÎ×´
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½Æ²ï¿½Í¬ï¿½ï¿½ï¿½ï¿½×´
             if (collider is BoxCollider2D)
             {
                 BoxCollider2D boxCollider = (BoxCollider2D)collider;
                 Gizmos.matrix = transform.localToWorldMatrix;
                 Gizmos.DrawCube(boxCollider.offset, boxCollider.size);
 
-                // »æÖÆ±ß¿ò
+                // ï¿½ï¿½ï¿½Æ±ß¿ï¿½
                 Gizmos.color = new Color(0f, 0.8f, 1f, 0.8f);
                 Gizmos.DrawWireCube(boxCollider.offset, boxCollider.size);
             }
@@ -78,34 +78,34 @@ public class UnomalyForceArea : MonoBehaviour
                 Gizmos.matrix = transform.localToWorldMatrix;
                 Gizmos.DrawSphere(circleCollider.offset, circleCollider.radius);
 
-                // »æÖÆ±ß¿ò
+                // ï¿½ï¿½ï¿½Æ±ß¿ï¿½
                 Gizmos.color = new Color(0f, 0.8f, 1f, 0.8f);
                 Gizmos.DrawWireSphere(circleCollider.offset, circleCollider.radius);
             }
         }
 
-        // »æÖÆÁ¦·½ÏòÖ¸Ê¾Æ÷
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸Ê¾ï¿½ï¿½
         DrawForceDirectionIndicator();
     }
 
-    // »æÖÆÁ¦·½ÏòÖ¸Ê¾Æ÷
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸Ê¾ï¿½ï¿½
     private void DrawForceDirectionIndicator()
     {
         Vector3 areaCenter = transform.position;
 
-        // ±ê×¼»¯Á¦ÏòÁ¿ÒÔÏÔÊ¾·½Ïò
+        // ï¿½ï¿½×¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½
         Vector3 forceDirection = force.normalized;
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawRay(areaCenter, forceDirection * 2f);
 
-        // »æÖÆ¼ýÍ·
+        // ï¿½ï¿½ï¿½Æ¼ï¿½Í·
         Vector3 arrowTip = areaCenter + forceDirection * 2f;
         Vector3 perpendicular = new Vector3(-forceDirection.y, forceDirection.x, 0) * 0.3f;
         Gizmos.DrawLine(arrowTip, arrowTip - forceDirection * 0.5f + perpendicular);
         Gizmos.DrawLine(arrowTip, arrowTip - forceDirection * 0.5f - perpendicular);
 
-        // ÏÔÊ¾Á¦µÄ´óÐ¡
+        // ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½Ä´ï¿½Ð¡
 #if UNITY_EDITOR
         UnityEditor.Handles.Label(areaCenter + forceDirection * 1.2f, $"Force: {force.magnitude:F1}");
 #endif

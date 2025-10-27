@@ -7,10 +7,13 @@ public class OutofControlAD : MonoBehaviour
     public bool outcontrol = true;         // 是否启用失控
     public bool forceLeft = true;          // 是否强制向左（A键），false为强制向右（D键）
     
+    [Header("箭头特效")]
+    public InverseADPlayer inverseADPlayer; // 引用InverseADPlayer组件
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        inverseADPlayer=GameObject.FindGameObjectWithTag("CanvasPlayer").GetComponent<InverseADPlayer>();
     }
 
     // Update is called once per frame
@@ -35,11 +38,23 @@ public class OutofControlAD : MonoBehaviour
                     {
                         playerMovement.SetADOutOfControl(true, false); // 强制向左
                         Debug.Log("玩家AD键失控：强制向左");
+                        
+                        // 启动箭头特效
+                        if (inverseADPlayer != null)
+                        {
+                            inverseADPlayer.StartADOutOfControlEffect(true);
+                        }
                     }
                     else
                     {
                         playerMovement.SetADOutOfControl(false, true); // 强制向右
                         Debug.Log("玩家AD键失控：强制向右");
+                        
+                        // 启动箭头特效
+                        if (inverseADPlayer != null)
+                        {
+                            inverseADPlayer.StartADOutOfControlEffect(false);
+                        }
                     }
                 }
                 else
@@ -47,6 +62,12 @@ public class OutofControlAD : MonoBehaviour
                     // 如果outcontrol为假，恢复AD键控制
                     playerMovement.SetADOutOfControl(false, false);
                     Debug.Log("玩家AD键恢复控制");
+                    
+                    // 停止箭头特效
+                    if (inverseADPlayer != null)
+                    {
+                        inverseADPlayer.StopADOutOfControlEffect();
+                    }
                 }
             }
         }
