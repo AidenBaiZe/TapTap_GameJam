@@ -1,16 +1,10 @@
 fileFormatVersion: 2
-guid: 37c603fcfe403a745a4c95b384330fec
+guid: 64748f702ffd0134dbe65d28fed2705b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5261992394389525642
-    second: DialogueBox_0
-  - first:
-      213: 4833402455760112517
-    second: DialogueBox_1
-  - first:
-      213: 1985244466137632497
-    second: DialogueBox_2
+      213: 2575525507654162683
+    second: "kk - \u526F\u672C_0"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -102,30 +96,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: DialogueBox_0
+      name: "kk - \u526F\u672C_0"
       rect:
         serializedVersion: 2
         x: 0
-        y: 1602
-        width: 274
-        height: 264
+        y: 0
+        width: 1499
+        height: 2486
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -134,52 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 67bea99ebc5a9f6b0800000000000000
-      internalID: -5261992394389525642
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: DialogueBox_1
-      rect:
-        serializedVersion: 2
-        x: 964
-        y: 255
-        width: 4144
-        height: 1205
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 58b0510dce1b31340800000000000000
-      internalID: 4833402455760112517
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: DialogueBox_2
-      rect:
-        serializedVersion: 2
-        x: 3002
-        y: 253
-        width: 116
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1fe817cd2510d8b10800000000000000
-      internalID: 1985244466137632497
+      spriteID: bf81fa1bdca1eb320800000000000000
+      internalID: 2575525507654162683
       vertices: []
       indices: 
       edges: []
@@ -198,9 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      DialogueBox_0: -5261992394389525642
-      DialogueBox_1: 4833402455760112517
-      DialogueBox_2: 1985244466137632497
+      "kk - \u526F\u672C_0": 2575525507654162683
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
