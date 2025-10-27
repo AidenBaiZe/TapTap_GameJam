@@ -31,7 +31,7 @@ namespace Animation
             {
                 animator.SetFloat(xSpeedHash, Mathf.Abs(rb.linearVelocityX));
                 animator.SetBool(onGroundHash, playerMovement.isGrounded);
-                animator.SetFloat(ySpeedHash, rb.linearVelocityY);
+                animator.SetFloat(ySpeedHash, playerMovement.Gravity > 0 ? rb.linearVelocityY : -1 * rb.linearVelocityY);
             }
     }
 }
