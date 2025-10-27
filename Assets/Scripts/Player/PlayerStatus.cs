@@ -9,13 +9,49 @@ public class PlayerStatus : MonoBehaviour
     void Start()
     {
         Health = 100;
+        isDead = false;
     }
 
+    private bool isDead = false; // 防止重复触发死亡
+    
     void Update()
     {
-        if (Health <= 0) {
-
+        // 检查是否是影子对象
+        var recorder = GetComponent<PlayerActionRecorder>();
+        if (recorder == null)
+        {
+            // 这是影子对象，不处理死亡逻辑
+            return;
+        }
+        
+        // 使用overlap检测与影子是否重叠
+        CheckShadowOverlap();
+        
+        if (Health <= 0 && !isDead) {
+            isDead = true;
             PlayerDie();
+        }
+    }
+    
+    // 检测与影子是否重叠
+    private void CheckShadowOverlap()
+    {
+        // 获取所有ShadowReplayer对象
+        ShadowReplayer[] allShadows = FindObjectsOfType<ShadowReplayer>();
+        
+        foreach (var shadow in allShadows)
+        {
+            // 检查距离（使用更严格的阈值，只有真正重叠时才触发）
+            float distance = Vector2.Distance(transform.position, shadow.transform.position);
+            
+            // 如果距离非常近（重叠），触发死亡
+            // 注意：只在影子真正开始回放后才检测，避免初始瞬移导致的误判
+            if (distance < 0.3f && !isDead)
+            {
+                Debug.Log("Player与影子重叠，触发死亡！距离: " + distance);
+                Health = 0;
+                return;
+            }
         }
     }
     public void PlayerDie()
@@ -44,6 +80,7 @@ public class PlayerStatus : MonoBehaviour
             Debug.LogWarning("Î´ÕÒµ½ PlayerActionRecorder ");
         }
         Health = 100;
+        isDead = false; // 重置死亡标志，允许再次死亡
         gameObject.GetComponent<PlayerTimeScale>().StopTimeScale();
         
         // æ¢å¤ADé®æ§å¶ï¼é²æ­¢å¤æ´»åä¸ç´å¤±æ§

@@ -19,6 +19,8 @@ public class ShadowReplayer : MonoBehaviour
 
     private Rigidbody2D rb;
     private Transform player;
+    private bool hasStarted = false; // 标记影子是否已开始回放
+    private float startDelayTimer = 0f; // 启动延迟计时器
 
     private void Awake()
     {
@@ -30,6 +32,23 @@ public class ShadowReplayer : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0f;
         }
+        
+        // 禁用影子上的PlayerStatus组件，防止影子触发死亡
+        var playerStatus = GetComponent<PlayerStatus>();
+        if (playerStatus != null)
+        {
+            playerStatus.enabled = false;
+        }
+        
+        // 确保影子有碰撞器且设置为Trigger，用于检测与player的重叠
+        var collider = GetComponent<Collider2D>();
+        if (collider != null)
+        {
+            collider.isTrigger = true;
+        }
+        
+        // 初始化延迟计时器
+        startDelayTimer = timeDelay;
     }
 
     private void Start()
@@ -45,6 +64,21 @@ public class ShadowReplayer : MonoBehaviour
 
     private void Update()
     {
+        // 如果还没有开始，等待延迟时间
+        if (!hasStarted)
+        {
+            startDelayTimer -= Time.deltaTime;
+            if (startDelayTimer <= 0)
+            {
+                hasStarted = true;
+            }
+            else
+            {
+                // 等待期间不移动影子，避免触发初始死亡
+                return;
+            }
+        }
+        
         // 优先使用玩家动作记录器的历史帧
         var recorder = PlayerActionRecorder.Instance;
         if (recorder != null)
@@ -57,13 +91,15 @@ public class ShadowReplayer : MonoBehaviour
             }
         }
 
-        // 回退：直接跟随玩家
+        // 回退：直接跟随玩家（但现在不应该执行到这里，因为没有历史记录时会等待）
         if (fallbackFollowPlayer)
         {
             if (player == null) CachePlayer();
             if (player != null)
             {
-                MoveTo(player.position + followOffset, copyRotation ? player.rotation : transform.rotation);
+                // 使用偏移，避免完全重叠
+                Vector3 safeOffset = followOffset.magnitude > 0.1f ? followOffset : new Vector3(0, 0, 0);
+                MoveTo(player.position + safeOffset, copyRotation ? player.rotation : transform.rotation);
             }
         }
     }
