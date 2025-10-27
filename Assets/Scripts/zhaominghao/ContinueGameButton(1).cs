@@ -14,6 +14,7 @@ public class ContinueGameButton : MonoBehaviour
 
     private Button continueButton;
     private CanvasGroup fadeCanvasGroup;
+    private SceneTransitionRunner runner; // 独立的协程承载者，避免按钮被销毁后无法启动协程
     private const string PLAYER_DATA_FILE_NAME = "PlayerData";
 
     private void Start()
@@ -48,32 +49,70 @@ public class ContinueGameButton : MonoBehaviour
 
     private IEnumerator LoadSavedGameWithFade(PlayerActionFrame saveData)
     {
-        // 创建淡化画布
-        fadeCanvasGroup = CreateFadeCanvas();
+        // 让本脚本在场景切换过程中不被销毁，否则协程会中断导致无法淡入
+        DontDestroyOnLoad(gameObject);
+
+    // 创建淡化画布（同时创建一个独立的 Runner 来承载淡入协程）
+    fadeCanvasGroup = CreateFadeCanvas();
 
         // 淡出（黑屏）
         yield return StartCoroutine(FadeToBlack(fadeDuration));
 
+        bool sceneHandled = false;
+
+        // 注册回调：场景完全加载后再定位玩家并开始淡入
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            try
+            {
+                Debug.Log($"场景加载完成回调: {scene.name}");
+
+                // 使用 PlayerActionRecorder 来加载玩家状态（优先）
+                PlayerActionRecorder playerRecorder = FindObjectOfType<PlayerActionRecorder>();
+                if (playerRecorder != null)
+                {
+                    playerRecorder.Load();
+                }
+                else
+                {
+                    // 如果找不到 PlayerActionRecorder，使用备用方法设置玩家位置
+                    SetPlayerPositionFromSave(saveData);
+                }
+
+                // 开始淡入：使用持久化的 Runner 启动协程，避免 ContinueGameButton 已被销毁
+                if (runner != null)
+                {
+                    runner.StartFadeIn(fadeCanvasGroup, fadeDuration);
+                }
+                else
+                {
+                    Debug.LogError("SceneTransitionRunner 丢失，无法开始淡入");
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"继续游戏定位阶段发生异常: {ex}");
+            }
+            finally
+            {
+                SceneManager.sceneLoaded -= OnSceneLoaded;
+                sceneHandled = true;
+            }
+        }
+
         // 加载保存的场景
         SceneManager.LoadScene(saveData.sceneName);
 
-        // 等待场景加载完成
-        yield return new WaitForSeconds(0.5f);
+        // 等待回调处理完成（避免协程提前结束）
+        yield return new WaitUntil(() => sceneHandled);
 
-        // 使用 PlayerActionRecorder 来加载玩家状态
-        PlayerActionRecorder playerRecorder = FindObjectOfType<PlayerActionRecorder>();
-        if (playerRecorder != null)
+        // 过渡逻辑已交给 Runner，当前按钮对象可安全销毁
+        if (this != null)
         {
-            playerRecorder.Load();
+            Destroy(gameObject);
         }
-        else
-        {
-            // 如果找不到 PlayerActionRecorder，使用备用方法设置玩家位置
-            SetPlayerPositionFromSave(saveData);
-        }
-
-        // 淡入（恢复画面）
-        yield return StartCoroutine(FadeInFromBlack(fadeDuration));
     }
 
     private void SetPlayerPositionFromSave(PlayerActionFrame saveData)
@@ -139,9 +178,12 @@ public class ContinueGameButton : MonoBehaviour
         rectTransform.offsetMin = Vector2.zero;
         rectTransform.offsetMax = Vector2.zero;
 
-        CanvasGroup canvasGroup = canvasObj.AddComponent<CanvasGroup>();
+    CanvasGroup canvasGroup = canvasObj.AddComponent<CanvasGroup>();
         canvasGroup.alpha = 0f; // 初始透明
         canvasGroup.blocksRaycasts = true; // 防止点击穿透
+
+    // 在画布上挂一个 Runner 用来跨场景承载淡入协程
+    runner = canvasObj.AddComponent<SceneTransitionRunner>();
 
         DontDestroyOnLoad(canvasObj);
 
@@ -199,6 +241,8 @@ public class ContinueGameButton : MonoBehaviour
         }
     }
 
+    // 使用 Runner 启动的淡入流程，已改为在 SceneTransitionRunner 中实现
+
     /// <summary>
     /// 检查是否存在存档文件
     /// </summary>
@@ -206,5 +250,43 @@ public class ContinueGameButton : MonoBehaviour
     {
         var saveData = SaveSystemTutorial.SaveSystem.LoadFromJson<PlayerActionFrame>(PLAYER_DATA_FILE_NAME);
         return saveData != null;
+    }
+
+}
+
+// 跨场景协程承载者：专门负责跨场景的淡入动画，避免依赖按钮对象的生命周期
+public class SceneTransitionRunner : MonoBehaviour
+{
+    public void StartFadeIn(CanvasGroup cg, float duration)
+    {
+        if (cg == null)
+        {
+            Debug.LogError("SceneTransitionRunner.StartFadeIn: CanvasGroup 为 null");
+            return;
+        }
+        StartCoroutine(FadeInCo(cg, duration));
+    }
+
+    private IEnumerator FadeInCo(CanvasGroup cg, float duration)
+    {
+        float elapsed = 0f;
+        cg.alpha = 1f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Clamp01(1f - (elapsed / duration));
+            cg.alpha = alpha;
+            yield return null;
+        }
+
+        cg.alpha = 0f;
+        Debug.Log("淡入完成 (Runner)");
+
+        // 动画结束后销毁画布
+        if (cg != null)
+        {
+            Destroy(cg.gameObject);
+        }
     }
 }
