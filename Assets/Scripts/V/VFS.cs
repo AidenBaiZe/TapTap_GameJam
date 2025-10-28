@@ -27,9 +27,11 @@ public class ForceVFS : MonoBehaviour
         {
             Debug.LogError($"ForceVFS: 当前物体 {gameObject.name} 上没有找到 VisualEffect 组件！");
         }
+        Set();
+
     }
 
-    void Update()
+    void Set()
     {
         // 如果组件都存在，更新VisualEffect的direction属性
         if (parentForceArea != null && visualEffect != null)
@@ -40,5 +42,11 @@ public class ForceVFS : MonoBehaviour
             // 设置VisualEffect的direction属性
             visualEffect.SetVector3("direction", direction);
         }
+        Vector3 scale = transform.parent.localScale;
+         float timeValue = scale.x * 2.5f / 100f;
+         
+         visualEffect.SetFloat("Time", timeValue);
     }
+
+   
 }

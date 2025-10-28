@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8044671979818532591}
   - component: {fileID: 5036405851614278164}
   m_Layer: 0
-  m_Name: 'anomaly Force area '
+  m_Name: anomaly Force area  old
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,8 +31,7 @@ Transform:
   m_LocalPosition: {x: -14, y: 1.8, z: 0}
   m_LocalScale: {x: 6, y: 11.125171, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3431011027206336859}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7108248179773186915
@@ -153,73 +152,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnomalyForceArea
   force: {x: 0, y: 0}
   restoreOnExit: 1
---- !u!1001 &7151202430376724430
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 9217827071838631574}
-    m_Modifications:
-    - target: {fileID: 354341298789705208, guid: 555f6abd993bbc34494cb10da5ea932a, type: 3}
-      propertyPath: m_Name
-      value: 'VertiaclVisual Effect Force  '
-      objectReference: {fileID: 0}
-    - target: {fileID: 5522339898760574613, guid: 555f6abd993bbc34494cb10da5ea932a, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 16.666668
-      objectReference: {fileID: 0}
-    - target: {fileID: 5522339898760574613, guid: 555f6abd993bbc34494cb10da5ea932a, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 4.575211
-      objectReference: {fileID: 0}
-    - target: {fileID: 5522339898760574613, guid: 555f6abd993bbc34494cb10da5ea932a, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -12.290215
-      objectReference: {fileID: 0}
-    - target: {fileID: 5522339898760574613, guid: 555f6abd993bbc34494cb10da5ea932a, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 6.884319
-      objectReference: {fileID: 0}
-    - target: {fileID: 5522339898760574613, guid: 555f6abd993bbc34494cb10da5ea932a, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5522339898760574613, guid: 555f6abd993bbc34494cb10da5ea932a, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5522339898760574613, guid: 555f6abd993bbc34494cb10da5ea932a, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5522339898760574613, guid: 555f6abd993bbc34494cb10da5ea932a, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5522339898760574613, guid: 555f6abd993bbc34494cb10da5ea932a, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5522339898760574613, guid: 555f6abd993bbc34494cb10da5ea932a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5522339898760574613, guid: 555f6abd993bbc34494cb10da5ea932a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5522339898760574613, guid: 555f6abd993bbc34494cb10da5ea932a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 555f6abd993bbc34494cb10da5ea932a, type: 3}
---- !u!4 &3431011027206336859 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5522339898760574613, guid: 555f6abd993bbc34494cb10da5ea932a, type: 3}
-  m_PrefabInstance: {fileID: 7151202430376724430}
-  m_PrefabAsset: {fileID: 0}

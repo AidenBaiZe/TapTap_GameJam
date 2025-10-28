@@ -54,10 +54,11 @@ public class PlayerStatus : MonoBehaviour
 
     private IEnumerator PlayerDying(float i=3)
     {
+        GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollow>().stop = true;
         GameObject saveobject = GameObject.FindGameObjectWithTag("Save");
         TextMeshProUGUI Timingtext=saveobject.GetComponent<SaveMono>().GameObjecttext.GetComponent<TextMeshProUGUI>();
 
-        Timingtext.text = "5";
+        Timingtext.text = "3";
         gameObject.GetComponent<PlayerMovement>().InhibitInput = true;
 
 
@@ -76,6 +77,7 @@ public class PlayerStatus : MonoBehaviour
         Timingtext.text = "";
         PlayerRespawn();
         gameObject.GetComponent<PlayerMovement>().InhibitInput = false;
+        GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollow>().stop = false;
     }
 
 }

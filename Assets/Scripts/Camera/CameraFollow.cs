@@ -6,15 +6,17 @@ public class CameraFollow : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public GameObject Player;
     public CameraRange cameraRange;
+    public bool stop;
     void Start()
     {
         Player = GameObject.FindGameObjectWithTag("Player");
+        stop = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (cameraRange != null)
+        if (cameraRange != null && !stop)
         {
             Vector3 playerposition = new Vector3(Player.transform.position.x, Player.transform.position.y, -10);
             float Positionx = transform.position.x;
