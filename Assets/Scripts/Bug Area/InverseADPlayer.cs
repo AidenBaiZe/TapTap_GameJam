@@ -39,6 +39,28 @@ public class InverseADPlayer : MonoBehaviour
         {
             MoveArrows();
         }
+        
+        // 如果是AD失控模式，让箭头跟随player移动
+        if (isADOutOfControl && (currentLeftArrow != null || currentRightArrow != null))
+        {
+            MoveArrowsWithPlayer();
+        }
+    }
+    
+    /// <summary>
+    /// 让箭头跟随player移动（用于AD失控模式）
+    /// </summary>
+    private void MoveArrowsWithPlayer()
+    {
+        if (currentLeftArrow != null)
+        {
+            currentLeftArrow.transform.position = player.transform.position + new Vector3(L.x, L.y, L.z);
+        }
+        
+        if (currentRightArrow != null)
+        {
+            currentRightArrow.transform.position = player.transform.position + new Vector3(R.x, R.y, R.z);
+        }
     }
     
     /// <summary>
@@ -245,10 +267,29 @@ public class InverseADPlayer : MonoBehaviour
     }
     
     /// <summary>
+    /// 清除所有tag为"AD"的子物体
+    /// </summary>
+    private void ClearADObjects()
+    {
+        // 遍历所有子物体
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
+            Transform child = transform.GetChild(i);
+            if (child.CompareTag("AD"))
+            {
+                Debug.Log("删除AD标签的子物体: " + child.name);
+                Destroy(child.gameObject);
+            }
+        }
+    }
+    
+    /// <summary>
     /// 为AD失控生成箭头
     /// </summary>
     private void GenerateArrowsForADOutOfControl()
     {
+        // 先删除所有tag为"AD"的子物体
+        ClearADObjects();
         
          currentLeftArrow=GameObject.Instantiate(LeftArrow);
          currentRightArrow=GameObject.Instantiate(RightArrow);
